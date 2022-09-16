@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from "react";
 
 function Vehicle() {
-	const [vehicle, setVehicle] = useState("");
+	const [vehicle, setVehicle] = useState([]);
 
 	const fetchData = async () => {
 		const response = await fetch("/api/VehicleApi");
@@ -16,11 +16,13 @@ function Vehicle() {
 	return (
 		<div>
 			<h1>Vehicle</h1>
-			{/* <ul>
+			<ul>
 				{vehicle.map((vehi, index) => (
-					<li key={index}>{vehi.vin}</li>
+					<li key={index}>
+						<h4>{vehi.vin}</h4>
+					</li>
 				))}
-			</ul> */}
+			</ul>
 		</div>
 	);
 }
