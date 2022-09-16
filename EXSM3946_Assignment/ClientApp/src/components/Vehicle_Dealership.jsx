@@ -14,15 +14,28 @@ function Vehicle_Dealership() {
 	return (
 		<div>
 			<h1>Vehicle Dealership</h1>
-			<ul>
-				{dealership.map((deal) => {
-					return (
-						<li key={deal.id}>
-							<h4>{deal.name}</h4>
-						</li>
-					);
-				})}
-			</ul>
+			<table className="table table-striped" aria-labelledby="tabelLabel">
+				<thead>
+					<tr>
+						<th>Dealership ID</th>
+						<th>Name</th>
+						<th>Manufacturer ID</th>
+						<th>Address</th>
+						<th>Phone Number</th>
+					</tr>
+				</thead>
+				<tbody>
+					{dealership.map((deal) => (
+						<tr key={deal.id}>
+							<td>{deal.id}</td>
+							<td>{deal.name}</td>
+							<td>{deal.manufacturerID}</td>
+							<td>{deal.address}</td>
+							<td>{deal.phoneNumber}</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
 		</div>
 	);
 }

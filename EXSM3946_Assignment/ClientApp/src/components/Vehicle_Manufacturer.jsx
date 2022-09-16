@@ -16,15 +16,22 @@ function Vehicle_Manufacturer() {
 	return (
 		<div>
 			<h1>Vehicle Manufacturer</h1>
-			<ul>
-				{manufacturers.map((manufacturer) => {
-					return (
-						<li key={manufacturer.id}>
-							<h4>{manufacturer.name}</h4>
-						</li>
-					);
-				})}
-			</ul>
+			<table className="table table-striped" aria-labelledby="tabelLabel">
+				<thead>
+					<tr>
+						<th>Manufacturer ID</th>
+						<th>Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					{manufacturers.map((manufacturer) => (
+						<tr key={manufacturer.id}>
+							<td>{manufacturer.id}</td>
+							<td>{manufacturer.name}</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
 		</div>
 	);
 }

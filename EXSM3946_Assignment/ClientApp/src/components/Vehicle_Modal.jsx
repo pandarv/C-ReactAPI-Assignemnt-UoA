@@ -16,15 +16,24 @@ function Vehicle_Modal() {
 	return (
 		<div>
 			<h1>Vehicle Modal</h1>
-			<ul>
-				{modals.map((modal) => {
-					return (
-						<li key={modal.id}>
-							<h4>{modal.name}</h4>{" "}
-						</li>
-					);
-				})}
-			</ul>
+			<table className="table table-striped" aria-labelledby="tabelLabel">
+				<thead>
+					<tr>
+						<th>Modal ID</th>
+						<th>Manufacturer ID</th>
+						<th>Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					{modals.map((modal) => (
+						<tr key={modal.id}>
+							<td>{modal.id}</td>
+							<td>{modal.manufacturerID}</td>
+							<td>{modal.name}</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
 		</div>
 	);
 }
