@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrashAlt, FaPlus } from "react-icons/fa";
-import InputValue from "./InputValue";
 
 function Vehicle_Manufacturer() {
 	const [manufacturers, setManufacturers] = useState([]);
 	const [isError, setIsError] = useState(null);
 	const [formData, setFormData] = useState({ name: "" });
-	const [isEdit, setIsEdit] = useState(false);
-
-	const inputId = useRef(null);
+	// const [isEdit, setIsEdit] = useState(false);
 
 	const fetchData = async () => {
 		try {
@@ -29,9 +26,9 @@ function Vehicle_Manufacturer() {
 	}, [formData]);
 
 	const addManufacturer = async () => {
-		let requestParam = {
-			name: formData.name,
-		};
+		// let requestParam = {
+		// 	name: formData.name,
+		// };
 		let requestOptions = {
 			method: "POST",
 		};
@@ -67,7 +64,7 @@ function Vehicle_Manufacturer() {
 	};
 
 	return (
-		<div>
+		<main>
 			<h1>Vehicle Manufacturer</h1>
 			<table className="table table-striped" aria-labelledby="tabelLabel">
 				<thead>
@@ -106,10 +103,9 @@ function Vehicle_Manufacturer() {
 				<button>
 					<FaPlus /> Add
 				</button>
-
 				<div>{isError && <p style={{ color: "red" }}>{isError}</p>}</div>
 			</form>
-		</div>
+		</main>
 	);
 }
 

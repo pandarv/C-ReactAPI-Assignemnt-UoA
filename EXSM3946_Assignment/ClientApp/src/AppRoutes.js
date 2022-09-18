@@ -3,6 +3,7 @@ import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import InputValue from "./components/InputValue";
+import DealershipEdit from "./components/DealershipEdit";
 import Vehicle from "./components/Vehicle";
 import Vehicle_Dealership from "./components/Vehicle_Dealership";
 import Vehicle_Manufacturer from "./components/Vehicle_Manufacturer";
@@ -40,6 +41,10 @@ const AppRoutes = [
 	{
 		path: "/edit/:id",
 		element: <InputValue />,
+	},
+	{
+		path: "/dealerEdit/:id",
+		element: <DealershipEdit />,
 	},
 ];
 
