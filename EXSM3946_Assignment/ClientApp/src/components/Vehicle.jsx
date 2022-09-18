@@ -1,7 +1,12 @@
 ﻿import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { FaEdit, FaTrashAlt, FaPlus } from "react-icons/fa";
 
 function Vehicle() {
 	const [vehicle, setVehicle] = useState([]);
+	const [formData, setFormData] = useState({ vin: "", modelID: "", dealershipID: "", trimLevel: "" });
+	const [isError, setIsError] = useState("");
+	const [arrLength, setArrLength] = useState(vehicle.length);
 
 	const fetchData = async () => {
 		const response = await fetch("/api/VehicleApi");
@@ -11,10 +16,42 @@ function Vehicle() {
 	};
 	useEffect(() => {
 		fetchData();
-	}, []);
+	}, [arrLength]);
 
+	const handleChange = (e) => {
+		setFormData((oldState) => ({ ...oldState, [e.target.name]: e.target.value }));
+	};
+
+	const addVehicle = async () => {
+		try {
+			const response = await fetch("/api/VehicleApi?" + new URLSearchParams(formData), { method: "POST" });
+			if (!response.ok) {
+				setIsError(`${response.status} ${response.statusText}`);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		addVehicle();
+		setArrLength((oldState) => oldState + 1);
+		setFormData({ vin: "", modelID: "", dealershipID: "", trimLevel: "" });
+	};
+
+	const deleteOnCLickHandle = (id) => {
+		fetch("/api/VehicleApi/" + id, { method: "DELETE" })
+			.then((response) => {
+				if (!response.ok) {
+					setIsError(`${response.status}  ${response.statusText}`);
+				}
+			})
+			.catch((error) => console.log(error));
+		setArrLength((oldState) => oldState - 1);
+	};
 	return (
-		<div>
+		<main>
 			<h1>Vehicle</h1>
 			<table className="table table-striped" aria-labelledby="tabelLabel">
 				<thead>
@@ -32,11 +69,42 @@ function Vehicle() {
 							<td>{vehi.modelID}</td>
 							<td>{vehi.dealershipID}</td>
 							<td>{vehi.trimLevel}</td>
+							<td>
+								<Link to={`/vehicleEdit/${vehi.vin}`} {...vehi}>
+									<FaEdit /> Edit
+								</Link>
+								<button onClick={() => deleteOnCLickHandle(vehi.vin)}>
+									<FaTrashAlt /> Delete
+								</button>
+							</td>
 						</tr>
 					))}
 				</tbody>
 			</table>
-		</div>
+			<h2>Add new Vehicle</h2>
+			<form onSubmit={handleSubmit}>
+				<div>
+					<label htmlFor="vin">VIN</label>
+					<input type="text" name="vin" id="vin" value={formData.vin.toUpperCase()} onChange={handleChange} />
+				</div>
+				<div>
+					<label htmlFor="modID">Modal ID</label>
+					<input type="number" name="modelID" id="modID" value={formData.modelID} onChange={handleChange} />
+				</div>
+				<div>
+					<label htmlFor="dealerID">Dealership ID</label>
+					<input type="number" name="dealershipID" id="modID" value={formData.dealershipID} onChange={handleChange} />
+				</div>
+				<div>
+					<label htmlFor="trimLevel">Trim Level</label>
+					<input type="text" name="trimLevel" id="trimLevel" value={formData.trimLevel} onChange={handleChange} />
+				</div>
+				<button>
+					<FaPlus /> Add
+				</button>
+				<div>{isError && <p style={{ color: "red" }}>{isError}</p>}</div>
+			</form>
+		</main>
 	);
 }
 
