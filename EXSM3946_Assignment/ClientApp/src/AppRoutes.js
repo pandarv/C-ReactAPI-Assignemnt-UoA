@@ -8,6 +8,7 @@ import Vehicle from "./components/Vehicle";
 import Vehicle_Dealership from "./components/Vehicle_Dealership";
 import Vehicle_Manufacturer from "./components/Vehicle_Manufacturer";
 import Vehicle_Modal from "./components/Vehicle_Modal";
+import ModalEdit from "./components/ModalEdit";
 
 const AppRoutes = [
 	{
@@ -45,6 +46,10 @@ const AppRoutes = [
 	{
 		path: "/dealerEdit/:id",
 		element: <DealershipEdit />,
+	},
+	{
+		path: "/modalEdit/:id",
+		element: <ModalEdit />,
 	},
 ];
 

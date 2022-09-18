@@ -56,7 +56,6 @@ namespace API_Assignment.Controllers
     public ActionResult Post(string name, string manufacturerID, string address, string phoneNumber)
     {
       int providedManufacturerID;
-      int providedPhoneNumber;
       //VehicleModel found;
       if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(manufacturerID) || string.IsNullOrWhiteSpace(address) || string.IsNullOrWhiteSpace(phoneNumber))
       {
@@ -65,14 +64,6 @@ namespace API_Assignment.Controllers
       try
       {
         providedManufacturerID = int.Parse(manufacturerID);
-      }
-      catch
-      {
-        return BadRequest();
-      }
-      try
-      {
-        int.TryParse(phoneNumber, out providedPhoneNumber);
       }
       catch
       {
@@ -89,7 +80,7 @@ namespace API_Assignment.Controllers
 
       try
       {
-        _context.Dealerships.Add(new Dealership() { Name = name, ManufacturerID = providedManufacturerID, Address = address, PhoneNumber = providedPhoneNumber });
+        _context.Dealerships.Add(new Dealership() { Name = name, ManufacturerID = providedManufacturerID, Address = address, PhoneNumber = phoneNumber });
         _context.SaveChanges();
         return Ok();
       }

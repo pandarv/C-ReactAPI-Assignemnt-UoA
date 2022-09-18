@@ -19,8 +19,6 @@ function Vehicle_Dealership() {
 	}, [arrLength]);
 
 	const handleChange = (e) => {
-		// console.log(e.target.value);
-
 		setFormData((oldState) => ({ ...oldState, [e.target.name]: e.target.value }));
 	};
 
@@ -42,7 +40,6 @@ function Vehicle_Dealership() {
 	};
 
 	const deleteOnCLickHandle = (id) => {
-		console.log(id);
 		fetch("/api/DealershipApi/" + id, { method: "DELETE" })
 			.then((response) => {
 				if (!response.ok) {
