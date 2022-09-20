@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrashAlt, FaPlus } from "react-icons/fa";
+import Loading from "./Loading";
 
 function Vehicle_Manufacturer() {
 	const [manufacturers, setManufacturers] = useState([]);
 	const [isError, setIsError] = useState(null);
 	const [formData, setFormData] = useState({ name: "" });
-	// const [isEdit, setIsEdit] = useState(false);
+	const [arrLength, setArrLength] = useState(manufacturers.length);
+	const [loading, setLoading] = useState(true);
 
 	const fetchData = async () => {
+		setLoading(true);
 		try {
 			const response = await fetch("/api/ManufacturerApi");
 			const data = await response.json();
 			if (!response.ok) {
 				throw new Error(response.statusText);
 			}
-			return setManufacturers(data);
+			setLoading(false);
+			setManufacturers(data);
 		} catch (error) {
 			console.log(error);
 		}
@@ -23,12 +27,9 @@ function Vehicle_Manufacturer() {
 
 	useEffect(() => {
 		fetchData();
-	}, [formData]);
+	}, [arrLength]);
 
 	const addManufacturer = async () => {
-		// let requestParam = {
-		// 	name: formData.name,
-		// };
 		let requestOptions = {
 			method: "POST",
 		};
@@ -40,11 +41,14 @@ function Vehicle_Manufacturer() {
 		} catch (error) {
 			console.log(error);
 		}
+		setArrLength((oldState) => oldState + 1);
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		addManufacturer();
+		setArrLength((oldState) => oldState + 1);
+		setFormData({ name: "" });
 	};
 	const handleChange = (e) => {
 		setFormData((prevValue) => ({ ...prevValue, [e.target.name]: e.target.value }));
@@ -54,17 +58,19 @@ function Vehicle_Manufacturer() {
 		fetch("/api/ManufacturerApi/" + id, { method: "DELETE" })
 			.then((response) => {
 				if (!response.ok) {
-					// throw new Error("Error");
-					console.log(response);
 					setIsError(`${response.status} ${response.statusText} `);
-					return response;
 				}
 			})
 			.catch((error) => console.log(error));
+
+		setArrLength((oldState) => oldState - 1);
 	};
 
+	if (loading) {
+		return <Loading />;
+	}
 	return (
-		<main>
+		<section>
 			<h1>Vehicle Manufacturer</h1>
 			<table className="table table-striped" aria-labelledby="tabelLabel">
 				<thead>
@@ -77,18 +83,17 @@ function Vehicle_Manufacturer() {
 					{manufacturers.map((manufacturer) => (
 						<tr key={manufacturer.id}>
 							<td>{manufacturer.id}</td>
-							{/* <td>{isEdit && manufacturer.id ? <InputValue manId={manufacturer.id} manName={manufacturer.name} /> : manufacturer.name}</td> */}
 							<td>{manufacturer.name}</td>
-							<td>
-								{/* <button onClick={() => updateOnCLickHandle(manufacturer.id)}> */}
-								<Link to={`/edit/${manufacturer.id}`} {...manufacturer}>
-									<FaEdit /> Edit
-								</Link>
-								{/* <button>
-									<FaEdit /> Edit
-								</button> */}
-								<button onClick={() => deleteOnCLickHandle(manufacturer.id)}>
-									<FaTrashAlt /> Delete
+							<td className="right-align">
+								<button className="buton but-edit">
+									<Link to={`/edit/${manufacturer.id}`} {...manufacturer}>
+										<FaEdit /> Edit
+									</Link>
+								</button>
+								<button className="buton but-delete" onClick={() => deleteOnCLickHandle(manufacturer.id)}>
+									<div>
+										<FaTrashAlt /> Delete
+									</div>
 								</button>
 							</td>
 						</tr>
@@ -96,16 +101,20 @@ function Vehicle_Manufacturer() {
 				</tbody>
 			</table>
 
-			<h2>Add New Manufacturer: </h2>
-			<form onSubmit={handleSubmit}>
-				<label htmlFor="name">Name</label>
-				<input type="text" name="name" id="name" value={formData.name} onChange={handleChange} />
-				<button>
-					<FaPlus /> Add
-				</button>
-				<div>{isError && <p style={{ color: "red" }}>{isError}</p>}</div>
-			</form>
-		</main>
+			<section className="form-section">
+				<h2>Add New Manufacturer: </h2>
+				<form onSubmit={handleSubmit}>
+					<div>
+						<label htmlFor="name">Name</label>
+						<input type="text" name="name" id="name" value={formData.name} onChange={handleChange} />
+					</div>
+					<button className="but-on-prim">
+						<FaPlus /> Add
+					</button>
+					<div>{isError ? <p style={{ color: "red" }}>{isError}</p> : <p></p>}</div>
+				</form>
+			</section>
+		</section>
 	);
 }
 

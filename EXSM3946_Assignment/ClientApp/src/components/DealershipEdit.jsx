@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import { FaEdit, FaLongArrowAltLeft } from "react-icons/fa";
 
 function DealershipEdit() {
 	const { id } = useParams();
@@ -50,7 +51,7 @@ function DealershipEdit() {
 	};
 
 	return (
-		<section>
+		<section className="form-section-edit">
 			<h1>Edit Dealership</h1>
 			<h4>{id}</h4>
 			<form onSubmit={handleUpdate}>
@@ -70,11 +71,19 @@ function DealershipEdit() {
 					<label htmlFor="phoneNumber">Phone Number</label>
 					<input maxLength={10} type="text" name="phoneNumber" id="phoneNumber" placeholder={phoneNumber} value={updateName.phoneNumber} onChange={changeHandle} />
 				</div>
-				<button>Edit</button>
+				<div className="center-hori">
+					<button className="buton but-edit-page">
+						<div>
+							<FaEdit /> Edit
+						</div>
+					</button>
+				</div>
 			</form>
 			{isError && <p style={{ color: "red" }}>{isError}</p>}
-			<button>
-				<Link to={"/dealership"}>Back to Dealership</Link>
+			<button className="buton but-edit-page-back">
+				<Link to={"/dealership"}>
+					<FaLongArrowAltLeft /> Back to Dealership
+				</Link>
 			</button>
 		</section>
 	);

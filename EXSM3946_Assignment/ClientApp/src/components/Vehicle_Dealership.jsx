@@ -31,10 +31,11 @@ function Vehicle_Dealership() {
 		} catch (error) {
 			console.log(error);
 		}
+		setArrLength((oldState) => oldState + 1);
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		!formData.name.match(/^[\w\s'.,-]{1,30}$/) ? setIsError("Name is not in correct format") : !formData.manufacturerID.match(/^[\d]{1,11}$/) ? setIsError("Manufacture ID is not in correct format") : !formData.address.match(/^[\w\s'.,-]{1,50}$/) ? setIsError("Address is not in correct format") : !formData.phoneNumber.match(/^[2-9][\d]{9}$/) ? setIsError("Phone number is not in correct format") : addDealership();
+		!formData.name.match(/^[\w\s'.,-]{1,30}$/) ? setIsError("Name is either empty or not in correct format") : !formData.manufacturerID.match(/^[\d]{1,11}$/) ? setIsError("Manufacture ID is not in correct format") : !formData.address.match(/^[\w\s'.,-]{1,50}$/) ? setIsError("Address is not in correct format") : !formData.phoneNumber.match(/^[2-9][\d]{9}$/) ? setIsError("Phone number is not in correct format") : addDealership();
 		setArrLength((oldState) => oldState + 1);
 		setFormData({ name: "", manufacturerID: "", address: "", phoneNumber: "" });
 	};
@@ -54,7 +55,7 @@ function Vehicle_Dealership() {
 	};
 
 	return (
-		<main>
+		<section>
 			<h1>Vehicle Dealership</h1>
 			<table className="table table-striped" aria-labelledby="tabelLabel">
 				<thead>
@@ -75,43 +76,50 @@ function Vehicle_Dealership() {
 							<td>{deal.address}</td>
 							<td>{deal.phoneNumber}</td>
 							<td>
-								<Link to={`/dealerEdit/${deal.id}`} {...deal}>
-									<FaEdit /> Edit
-								</Link>
-								<button onClick={() => deleteOnCLickHandle(deal.id)}>
-									<FaTrashAlt /> Delete
+								<button className="buton but-edit">
+									<Link to={`/dealerEdit/${deal.id}`} {...deal}>
+										<FaEdit /> Edit
+									</Link>
+								</button>
+								<button className="buton but-delete" onClick={() => deleteOnCLickHandle(deal.id)}>
+									<div>
+										<FaTrashAlt /> Delete
+									</div>
 								</button>
 							</td>
 						</tr>
 					))}
 				</tbody>
 			</table>
-
-			<h2>Add New Manufacturer: </h2>
-			<form onSubmit={handleSubmit}>
-				<div>
-					<label htmlFor="name">Name</label>
-					<input type="text" name="name" id="name" value={formData.name} onChange={handleChange} />
-				</div>
-				<div>
-					<label htmlFor="manuID">Manufacturer ID</label>
-					<input type="number" name="manufacturerID" id="manuID" value={formData.manufacturerID} onChange={handleChange} />
-				</div>
-				<div>
-					<label htmlFor="address">Address</label>
-					<input type="text" name="address" id="address" value={formData.address} onChange={handleChange} />
-				</div>
-				<div>
-					<label htmlFor="phoneNumber">Phone Number</label>
-					<input maxLength={10} type="text" name="phoneNumber" id="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
-				</div>
-				{/* <p>{formData.phoneNumber.match(/^[2-9][\d]{9}$/)}</p> */}
-				<button>
-					<FaPlus /> Add
-				</button>
-				<div>{isError && <p style={{ color: "red" }}>{isError}</p>}</div>
-			</form>
-		</main>
+			<section className="form-section">
+				<h2>Add New Manufacturer: </h2>
+				<form onSubmit={handleSubmit}>
+					<div>
+						<label htmlFor="name">Name</label>
+						<input type="text" name="name" id="name" value={formData.name} onChange={handleChange} />
+					</div>
+					<div>
+						<label htmlFor="manuID">Manufacturer ID</label>
+						<input type="number" name="manufacturerID" id="manuID" value={formData.manufacturerID} onChange={handleChange} />
+					</div>
+					<div>
+						<label htmlFor="address">Address</label>
+						<input type="text" name="address" id="address" value={formData.address} onChange={handleChange} />
+					</div>
+					<div>
+						<label htmlFor="phoneNumber">Phone Number</label>
+						<input maxLength={10} type="text" name="phoneNumber" id="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+					</div>
+					{/* <p>{formData.phoneNumber.match(/^[2-9][\d]{9}$/)}</p> */}
+					<div>{isError && <p style={{ color: "red" }}>{isError}</p>}</div>
+					<button className="but-on-prim">
+						<div>
+							<FaPlus /> Add
+						</div>
+					</button>
+				</form>
+			</section>
+		</section>
 	);
 }
 

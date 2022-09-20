@@ -1,17 +1,20 @@
 ﻿import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrashAlt, FaPlus } from "react-icons/fa";
+import Loading from "./Loading";
 
 function Vehicle() {
 	const [vehicle, setVehicle] = useState([]);
 	const [formData, setFormData] = useState({ vin: "", modelID: "", dealershipID: "", trimLevel: "" });
 	const [isError, setIsError] = useState("");
 	const [arrLength, setArrLength] = useState(vehicle.length);
+	const [loading, setLoading] = useState(true);
 
 	const fetchData = async () => {
+		setLoading(true);
 		const response = await fetch("/api/VehicleApi");
 		const data = await response.json();
-		console.log(data);
+		setLoading(false);
 		setVehicle(data);
 	};
 	useEffect(() => {
@@ -31,12 +34,13 @@ function Vehicle() {
 		} catch (error) {
 			console.log(error);
 		}
+		setArrLength((oldState) => oldState + 1);
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		addVehicle();
-		setArrLength((oldState) => oldState + 1);
+		// setArrLength((oldState) => oldState + 1);
 		setFormData({ vin: "", modelID: "", dealershipID: "", trimLevel: "" });
 	};
 
@@ -50,8 +54,12 @@ function Vehicle() {
 			.catch((error) => console.log(error));
 		setArrLength((oldState) => oldState - 1);
 	};
+
+	if (loading) {
+		return <Loading />;
+	}
 	return (
-		<main>
+		<section>
 			<h1>Vehicle</h1>
 			<table className="table table-striped" aria-labelledby="tabelLabel">
 				<thead>
@@ -69,42 +77,48 @@ function Vehicle() {
 							<td>{vehi.modelID}</td>
 							<td>{vehi.dealershipID}</td>
 							<td>{vehi.trimLevel}</td>
-							<td>
-								<Link to={`/vehicleEdit/${vehi.vin}`} {...vehi}>
-									<FaEdit /> Edit
-								</Link>
-								<button onClick={() => deleteOnCLickHandle(vehi.vin)}>
-									<FaTrashAlt /> Delete
+							<td className="right-align">
+								<button className="buton but-edit">
+									<Link to={`/vehicleEdit/${vehi.vin}`} {...vehi}>
+										<FaEdit /> Edit
+									</Link>
+								</button>
+								<button className="buton but-delete" onClick={() => deleteOnCLickHandle(vehi.vin)}>
+									<div>
+										<FaTrashAlt /> Delete
+									</div>
 								</button>
 							</td>
 						</tr>
 					))}
 				</tbody>
 			</table>
-			<h2>Add new Vehicle</h2>
-			<form onSubmit={handleSubmit}>
-				<div>
-					<label htmlFor="vin">VIN</label>
-					<input type="text" name="vin" id="vin" value={formData.vin.toUpperCase()} onChange={handleChange} />
-				</div>
-				<div>
-					<label htmlFor="modID">Modal ID</label>
-					<input type="number" name="modelID" id="modID" value={formData.modelID} onChange={handleChange} />
-				</div>
-				<div>
-					<label htmlFor="dealerID">Dealership ID</label>
-					<input type="number" name="dealershipID" id="modID" value={formData.dealershipID} onChange={handleChange} />
-				</div>
-				<div>
-					<label htmlFor="trimLevel">Trim Level</label>
-					<input type="text" name="trimLevel" id="trimLevel" value={formData.trimLevel} onChange={handleChange} />
-				</div>
-				<button>
-					<FaPlus /> Add
-				</button>
-				<div>{isError && <p style={{ color: "red" }}>{isError}</p>}</div>
-			</form>
-		</main>
+			<section className="form-section">
+				<h2>Add new Vehicle</h2>
+				<form onSubmit={handleSubmit}>
+					<div>
+						<label htmlFor="vin">VIN</label>
+						<input type="text" name="vin" id="vin" value={formData.vin.toUpperCase()} onChange={handleChange} />
+					</div>
+					<div>
+						<label htmlFor="modID">Modal ID</label>
+						<input type="number" name="modelID" id="modID" value={formData.modelID} onChange={handleChange} />
+					</div>
+					<div>
+						<label htmlFor="dealerID">Dealership ID</label>
+						<input type="number" name="dealershipID" id="modID" value={formData.dealershipID} onChange={handleChange} />
+					</div>
+					<div>
+						<label htmlFor="trimLevel">Trim Level</label>
+						<input type="text" name="trimLevel" id="trimLevel" value={formData.trimLevel} onChange={handleChange} />
+					</div>
+					<button className="but-on-prim">
+						<FaPlus /> Add
+					</button>
+					<div>{isError && <p style={{ color: "red" }}>{isError}</p>}</div>
+				</form>
+			</section>
+		</section>
 	);
 }
 

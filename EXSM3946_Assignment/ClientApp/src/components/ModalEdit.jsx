@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import { FaEdit, FaLongArrowAltLeft } from "react-icons/fa";
 
 const ModalEdit = () => {
 	const { id } = useParams();
@@ -49,7 +50,7 @@ const ModalEdit = () => {
 	};
 
 	return (
-		<section>
+		<section className="form-section-edit">
 			<h1>ModalEdit</h1>
 			<h4>{id}</h4>
 			<form onSubmit={handleUpdate}>
@@ -62,10 +63,18 @@ const ModalEdit = () => {
 					<input type="text" name="name" id="name" placeholder={name} value={updateData.name} onChange={handleChange} />
 				</div>
 				<div>{isError && <p style={{ color: "red" }}>{isError}</p>}</div>
-				<button>Edit</button>
+				<div className="center-hori">
+					<button className="buton but-edit-page">
+						<div>
+							<FaEdit /> Edit
+						</div>
+					</button>
+				</div>
 			</form>
-			<button>
-				<Link to={"/modal"}>Back to Modal</Link>
+			<button className="buton but-edit-page-back">
+				<Link to={"/modal"}>
+					<FaLongArrowAltLeft /> Back to Modal
+				</Link>
 			</button>
 		</section>
 	);

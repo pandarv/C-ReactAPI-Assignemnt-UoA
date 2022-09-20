@@ -1,15 +1,167 @@
 ﻿/* Provide sufficient contrast against white background */
+* {
+	font-family: Avenir, "Lato", sans-serif;
+	letter-spacing: 1px;
+	font-size: 18px;
+}
 a {
-  color: #0366d6;
+	color: #0366d6;
 }
 
 code {
-  color: #E01A76;
+	color: #e01a76;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+	color: #fff;
+	background-color: #1b6ec2;
+	border-color: #1861ac;
 }
 
+section {
+	margin-block: 4rem;
+}
+
+h1 {
+	margin-bottom: 2rem;
+}
+
+.form-section {
+	margin-block: 4rem;
+	max-width: 500px;
+	padding: 2em 1.5em;
+	border-radius: 8px;
+	box-shadow: 0px 5px 25px rgb(171, 171, 171, 0.5);
+}
+
+.form-section-edit {
+	margin-inline: auto;
+	margin-block: 4rem;
+	max-width: 800px;
+	padding: 2em 1.5em;
+	border-radius: 8px;
+	box-shadow: 0px 5px 25px rgb(171, 171, 171, 0.5);
+}
+form > div {
+	margin-bottom: 2rem;
+}
+form {
+	margin-block: 2rem;
+	max-width: 100%;
+}
+input {
+	display: block;
+	width: 100%;
+}
+label {
+	margin-bottom: 0.5rem;
+}
+
+.but-on-prim {
+	display: inline-block;
+	border: none;
+	border-radius: 0.3rem;
+	padding: 1em 1.8em;
+	background-color: #e01a76ab;
+	margin-top: 2rem;
+	text-align: center;
+	transition: all 0.25s ease-in-out;
+}
+
+.but-on-prim:hover {
+	background-color: #e01a7681;
+	transform: scale(0.96);
+}
+
+button > svg {
+	margin-right: 0.5rem;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th,
+td {
+	text-align: left;
+	padding: 0.5rem;
+	background-color: #f5eafa;
+}
+
+tr:nth-child(even) {
+	background-color: hsla(271, 100%, 19%, 0.239);
+}
+thead tr th {
+	background-color: #6db847;
+	color: rgb(0, 0, 0);
+}
+
+a {
+	text-decoration: none;
+	color: black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.5rem;
+}
+a:hover {
+	color: black;
+}
+
+.buton {
+	border: none;
+	display: inline-block;
+	padding: 0.3em 0.8em;
+	border-radius: 0.3rem;
+	cursor: pointer;
+}
+
+.but-delete {
+	background-color: rgb(253, 131, 87);
+	transition: all 0.25s ease-in-out;
+}
+
+.but-delete:hover {
+	background-color: rgba(253, 131, 87, 0.834);
+}
+
+.but-on-prim > div,
+.but-delete > div,
+.but-edit-page > div {
+	display: flex;
+	place-items: center;
+	gap: 0.5rem;
+}
+
+.but-edit-page {
+	margin-top: 1rem;
+}
+
+.but-edit,
+.but-edit-page {
+	margin-right: 1rem;
+	background-color: #3591f9;
+	transition: all 0.25s ease-in-out;
+}
+.but-edit:hover,
+.but-edit-page:hover {
+	background-color: #3590f9d6;
+}
+
+.right-align {
+	text-align: right;
+}
+
+.but-edit-page-back {
+	margin-top: 2rem;
+	background-color: #e66df9;
+	transition: all 0.25s ease-in-out;
+}
+.but-edit-page-back:hover {
+	background-color: #df35f98d;
+}
+.center-hori {
+	width: 100px;
+	margin-inline: auto;
+}

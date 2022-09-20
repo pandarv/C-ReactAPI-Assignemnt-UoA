@@ -31,12 +31,13 @@ function Vehicle_Modal() {
 		} catch (error) {
 			console.log(error);
 		}
+		setArrLength((oldState) => oldState + 1);
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		addModal();
-		setArrLength((oldState) => oldState + 1);
+		// setArrLength((oldState) => oldState + 1);
 		setFormData({ manufacturerID: "", name: "" });
 	};
 
@@ -69,33 +70,39 @@ function Vehicle_Modal() {
 							<td>{modal.id}</td>
 							<td>{modal.manufacturerID}</td>
 							<td>{modal.name}</td>
-							<td>
-								<Link to={`/modalEdit/${modal.id}`} {...modal}>
-									<FaEdit /> Edit
-								</Link>
-								<button onClick={() => deleteOnCLickHandle(modal.id)}>
-									<FaTrashAlt /> Delete
+							<td className="right-align">
+								<button className="buton but-edit">
+									<Link to={`/modalEdit/${modal.id}`} {...modal}>
+										<FaEdit /> Edit
+									</Link>
+								</button>
+								<button className="buton but-delete" onClick={() => deleteOnCLickHandle(modal.id)}>
+									<div>
+										<FaTrashAlt /> Delete
+									</div>
 								</button>
 							</td>
 						</tr>
 					))}
 				</tbody>
 			</table>
-			<h2>Add new Vehicle Modal</h2>
-			<form onSubmit={handleSubmit}>
-				<div>
-					<label htmlFor="manuID">Manufacturer ID</label>
-					<input type="number" name="manufacturerID" id="manuID" value={formData.manufacturerID} onChange={handleChange} />
-				</div>
-				<div>
-					<label htmlFor="name">Name</label>
-					<input type="text" name="name" id="name" value={formData.name} onChange={handleChange} />
-				</div>
-				<button>
-					<FaPlus /> Add
-				</button>
-				<div>{isError && <p style={{ color: "red" }}>{isError}</p>}</div>
-			</form>
+			<section className="form-section">
+				<h2>Add new Vehicle Modal</h2>
+				<form onSubmit={handleSubmit}>
+					<div>
+						<label htmlFor="manuID">Manufacturer ID</label>
+						<input type="number" name="manufacturerID" id="manuID" value={formData.manufacturerID} onChange={handleChange} />
+					</div>
+					<div>
+						<label htmlFor="name">Name</label>
+						<input type="text" name="name" id="name" value={formData.name} onChange={handleChange} />
+					</div>
+					<button className="but-on-prim">
+						<FaPlus /> Add
+					</button>
+					<div>{isError && <p style={{ color: "red" }}>{isError}</p>}</div>
+				</form>
+			</section>
 		</div>
 	);
 }

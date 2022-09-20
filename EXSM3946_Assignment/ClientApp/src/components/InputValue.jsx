@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import { FaEdit, FaLongArrowAltLeft } from "react-icons/fa";
 
 function InputValue() {
 	const { id } = useParams();
@@ -48,16 +49,26 @@ function InputValue() {
 		setUpdateName((oldState) => ({ ...oldState, [e.target.name]: e.target.value }));
 	};
 	return (
-		<section>
+		<section className="form-section-edit">
 			<h1>Edit Manufecturer</h1>
 			<h4>{id}</h4>
 			<form onSubmit={handleUpdate}>
-				<input type="text" name="name" id="name" placeholder={name} value={updateName.name} onChange={changeHandle} />
-				<button>Edit</button>
+				<div>
+					<input type="text" name="name" id="name" placeholder={name} value={updateName.name} onChange={changeHandle} />
+				</div>
+				<div className="center-hori">
+					<button className="buton but-edit-page">
+						<div>
+							<FaEdit /> Edit
+						</div>
+					</button>
+				</div>
 			</form>
 			{isError && <p style={{ color: "red" }}>{isError}</p>}
-			<button>
-				<Link to={"/manufacturer"}>Back to Manufacturer</Link>
+			<button className="buton but-edit-page-back">
+				<Link to={"/manufacturer"}>
+					<FaLongArrowAltLeft /> Back to Manufacturer
+				</Link>
 			</button>
 		</section>
 	);

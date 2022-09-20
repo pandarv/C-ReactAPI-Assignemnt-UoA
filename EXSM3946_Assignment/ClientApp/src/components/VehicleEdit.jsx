@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import { FaEdit, FaLongArrowAltLeft } from "react-icons/fa";
 
 const VehicleEdit = () => {
 	const { id } = useParams();
@@ -48,7 +49,7 @@ const VehicleEdit = () => {
 		setUpdateData((oldState) => ({ ...oldState, [e.target.name]: e.target.value }));
 	};
 	return (
-		<section>
+		<section className="form-section-edit">
 			<h1>VehicleEdit</h1>
 			<h4>{id}</h4>
 
@@ -66,10 +67,18 @@ const VehicleEdit = () => {
 					<input type="text" name="trimLevel" id="trimLevel" placeholder={trimLevel} value={updateData.trimLevel} onChange={handleChange} />
 				</div>
 				<div>{isError && <p style={{ color: "red" }}>{isError}</p>}</div>
-				<button>Edit</button>
+				<div className="center-hori">
+					<button className="buton but-edit-page">
+						<div>
+							<FaEdit /> Edit
+						</div>
+					</button>
+				</div>
 			</form>
-			<button>
-				<Link to={"/vehicle"}>Back to Vehicle</Link>
+			<button className="buton but-edit-page-back">
+				<Link to={"/vehicle"}>
+					<FaLongArrowAltLeft /> Back to Vehicle
+				</Link>
 			</button>
 		</section>
 	);
