@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrashAlt, FaPlus } from "react-icons/fa";
 import Loading from "./Loading";
+import Error from "./Error";
 
 function Vehicle_Manufacturer() {
 	const [manufacturers, setManufacturers] = useState([]);
-	const [isError, setIsError] = useState(null);
+	const [isError, setIsError] = useState("");
 	const [formData, setFormData] = useState({ name: "" });
 	const [arrLength, setArrLength] = useState(manufacturers.length);
 	const [loading, setLoading] = useState(true);
@@ -36,7 +37,7 @@ function Vehicle_Manufacturer() {
 		try {
 			const response = await fetch("/api/ManufacturerApi?" + new URLSearchParams(formData), requestOptions);
 			if (!response.ok) {
-				setIsError(`${response.status} ${response.statusText}`);
+				setIsError(`${response.status} ${response.statusText} `);
 			}
 		} catch (error) {
 			console.log(error);
@@ -71,12 +72,13 @@ function Vehicle_Manufacturer() {
 	}
 	return (
 		<section>
-			<h1>Vehicle Manufacturer</h1>
+			<h1>Manufacturer</h1>
 			<table className="table table-striped" aria-labelledby="tabelLabel">
 				<thead>
 					<tr>
 						<th>Manufacturer ID</th>
 						<th>Name</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -108,10 +110,10 @@ function Vehicle_Manufacturer() {
 						<label htmlFor="name">Name</label>
 						<input type="text" name="name" id="name" value={formData.name} onChange={handleChange} />
 					</div>
+					<div className="fixed-height">{isError && <Error isError={isError} />}</div>
 					<button className="but-on-prim">
 						<FaPlus /> Add
 					</button>
-					<div>{isError ? <p style={{ color: "red" }}>{isError}</p> : <p></p>}</div>
 				</form>
 			</section>
 		</section>

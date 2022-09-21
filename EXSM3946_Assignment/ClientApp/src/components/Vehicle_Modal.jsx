@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrashAlt, FaPlus } from "react-icons/fa";
+import Loading from "./Loading";
+import Error from "./Error";
 
 function Vehicle_Modal() {
 	const [modals, setModals] = useState([]);
 	const [formData, setFormData] = useState({ manufacturerID: "", name: "" });
 	const [isError, setIsError] = useState("");
 	const [arrLength, setArrLength] = useState(modals.length);
+	const [loading, setLoading] = useState(true);
 
 	const fetchData = async () => {
+		setLoading(true);
 		const response = await fetch("/api/ModelApi");
 		const data = await response.json();
-		console.log(data);
+		setLoading(false);
 		setModals(data);
 	};
 
@@ -37,7 +41,6 @@ function Vehicle_Modal() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		addModal();
-		// setArrLength((oldState) => oldState + 1);
 		setFormData({ manufacturerID: "", name: "" });
 	};
 
@@ -53,15 +56,19 @@ function Vehicle_Modal() {
 		setArrLength((oldState) => oldState - 1);
 	};
 
+	if (loading) {
+		return <Loading />;
+	}
 	return (
-		<div>
-			<h1>Vehicle Modal</h1>
+		<section>
+			<h1>Modal</h1>
 			<table className="table table-striped" aria-labelledby="tabelLabel">
 				<thead>
 					<tr>
 						<th>Modal ID</th>
 						<th>Manufacturer ID</th>
 						<th>Name</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -87,7 +94,7 @@ function Vehicle_Modal() {
 				</tbody>
 			</table>
 			<section className="form-section">
-				<h2>Add new Vehicle Modal</h2>
+				<h2>Add New Modal</h2>
 				<form onSubmit={handleSubmit}>
 					<div>
 						<label htmlFor="manuID">Manufacturer ID</label>
@@ -97,13 +104,13 @@ function Vehicle_Modal() {
 						<label htmlFor="name">Name</label>
 						<input type="text" name="name" id="name" value={formData.name} onChange={handleChange} />
 					</div>
+					<div className="fixed-height">{isError && <Error isError={isError} />}</div>
 					<button className="but-on-prim">
 						<FaPlus /> Add
 					</button>
-					<div>{isError && <p style={{ color: "red" }}>{isError}</p>}</div>
 				</form>
 			</section>
-		</div>
+		</section>
 	);
 }
 

@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrashAlt, FaPlus } from "react-icons/fa";
 import Loading from "./Loading";
+import Error from "./Error";
 
 function Vehicle() {
 	const [vehicle, setVehicle] = useState([]);
@@ -68,6 +69,7 @@ function Vehicle() {
 						<th>Model ID</th>
 						<th>Dealership ID</th>
 						<th>Trim Level</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -94,7 +96,7 @@ function Vehicle() {
 				</tbody>
 			</table>
 			<section className="form-section">
-				<h2>Add new Vehicle</h2>
+				<h2>Add New Vehicle</h2>
 				<form onSubmit={handleSubmit}>
 					<div>
 						<label htmlFor="vin">VIN</label>
@@ -106,16 +108,16 @@ function Vehicle() {
 					</div>
 					<div>
 						<label htmlFor="dealerID">Dealership ID</label>
-						<input type="number" name="dealershipID" id="modID" value={formData.dealershipID} onChange={handleChange} />
+						<input type="number" name="dealershipID" id="dealerID" value={formData.dealershipID} onChange={handleChange} />
 					</div>
 					<div>
 						<label htmlFor="trimLevel">Trim Level</label>
 						<input type="text" name="trimLevel" id="trimLevel" value={formData.trimLevel} onChange={handleChange} />
 					</div>
+					<div className="fixed-height">{isError && <Error isError={isError} />}</div>
 					<button className="but-on-prim">
 						<FaPlus /> Add
 					</button>
-					<div>{isError && <p style={{ color: "red" }}>{isError}</p>}</div>
 				</form>
 			</section>
 		</section>

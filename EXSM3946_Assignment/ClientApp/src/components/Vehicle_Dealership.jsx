@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrashAlt, FaPlus } from "react-icons/fa";
+import Loading from "./Loading";
+import Error from "./Error";
 
 function Vehicle_Dealership() {
 	const [dealership, setDealership] = useState([]);
 	const [formData, setFormData] = useState({ name: "", manufacturerID: "", address: "", phoneNumber: "" });
 	const [isError, setIsError] = useState("");
 	const [arrLength, setArrLength] = useState(dealership.length);
+	const [loading, setLoading] = useState(true);
 
 	const fetchData = async () => {
+		setLoading(true);
 		const response = await fetch("/api/DealershipApi");
 		const data = await response.json();
-		console.log(data);
+		setLoading(false);
 		setDealership(data);
 	};
 	useEffect(() => {
@@ -44,19 +48,20 @@ function Vehicle_Dealership() {
 		fetch("/api/DealershipApi/" + id, { method: "DELETE" })
 			.then((response) => {
 				if (!response.ok) {
-					// throw new Error("Error");
-					console.log(response);
 					setIsError(`${response.status} ${response.statusText} `);
-					// return response;
 				}
 			})
 			.catch((error) => console.log(error));
 		setArrLength((oldState) => oldState - 1);
 	};
 
+	if (loading) {
+		return <Loading />;
+	}
+
 	return (
 		<section>
-			<h1>Vehicle Dealership</h1>
+			<h1>Dealership</h1>
 			<table className="table table-striped" aria-labelledby="tabelLabel">
 				<thead>
 					<tr>
@@ -65,6 +70,7 @@ function Vehicle_Dealership() {
 						<th>Manufacturer ID</th>
 						<th>Address</th>
 						<th>Phone Number</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -92,7 +98,7 @@ function Vehicle_Dealership() {
 				</tbody>
 			</table>
 			<section className="form-section">
-				<h2>Add New Manufacturer: </h2>
+				<h2>Add New Dealership: </h2>
 				<form onSubmit={handleSubmit}>
 					<div>
 						<label htmlFor="name">Name</label>
@@ -110,8 +116,7 @@ function Vehicle_Dealership() {
 						<label htmlFor="phoneNumber">Phone Number</label>
 						<input maxLength={10} type="text" name="phoneNumber" id="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
 					</div>
-					{/* <p>{formData.phoneNumber.match(/^[2-9][\d]{9}$/)}</p> */}
-					<div>{isError && <p style={{ color: "red" }}>{isError}</p>}</div>
+					<div className="fixed-height">{isError && <Error isError={isError} />}</div>
 					<button className="but-on-prim">
 						<div>
 							<FaPlus /> Add

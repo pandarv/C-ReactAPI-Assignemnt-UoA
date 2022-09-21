@@ -52,7 +52,15 @@ form {
 input {
 	display: block;
 	width: 100%;
+	padding: 0.8rem 1.4rem;
+	border: 2px #9c1152ab;
+	border-style: dashed;
 }
+
+input:hover {
+	border-color: #0366d6;
+}
+
 label {
 	margin-bottom: 0.5rem;
 }
@@ -62,8 +70,8 @@ label {
 	border: none;
 	border-radius: 0.3rem;
 	padding: 1em 1.8em;
+	margin-top: 1rem;
 	background-color: #e01a76ab;
-	margin-top: 2rem;
 	text-align: center;
 	transition: all 0.25s ease-in-out;
 }
@@ -84,16 +92,24 @@ table {
 
 th,
 td {
-	text-align: left;
+	text-align: center;
 	padding: 0.5rem;
-	background-color: #f5eafa;
+	vertical-align: middle;
+}
+
+tr td {
+	background-color: hsla(281, 92%, 80%, 0.074);
 }
 
 tr:nth-child(even) {
 	background-color: hsla(271, 100%, 19%, 0.239);
 }
+
+thead {
+	background-color: #0365d670;
+}
 thead tr th {
-	background-color: #6db847;
+	background-color: white;
 	color: rgb(0, 0, 0);
 }
 
@@ -115,6 +131,7 @@ a:hover {
 	padding: 0.3em 0.8em;
 	border-radius: 0.3rem;
 	cursor: pointer;
+	margin: 0.3rem;
 }
 
 .but-delete {
@@ -123,7 +140,7 @@ a:hover {
 }
 
 .but-delete:hover {
-	background-color: rgba(253, 131, 87, 0.834);
+	background-color: rgba(253, 131, 87, 0.663);
 }
 
 .but-on-prim > div,
@@ -138,15 +155,18 @@ a:hover {
 	margin-top: 1rem;
 }
 
+.but-edit {
+	padding-inline: 1.5em;
+}
+
 .but-edit,
 .but-edit-page {
-	margin-right: 1rem;
 	background-color: #3591f9;
 	transition: all 0.25s ease-in-out;
 }
 .but-edit:hover,
 .but-edit-page:hover {
-	background-color: #3590f9d6;
+	background-color: #3590f9ad;
 }
 
 .right-align {
@@ -164,4 +184,13 @@ a:hover {
 .center-hori {
 	width: 100px;
 	margin-inline: auto;
+}
+
+.fixed-height {
+	/* margin-top: 0.5rem; */
+	height: 20px;
+}
+
+.error {
+	color: #e01a76;
 }
