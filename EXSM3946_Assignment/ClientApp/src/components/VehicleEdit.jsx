@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { FaEdit, FaLongArrowAltLeft } from "react-icons/fa";
+import Error from "./Error";
 
 const VehicleEdit = () => {
 	const { id } = useParams();
@@ -25,13 +26,18 @@ const VehicleEdit = () => {
 
 	useEffect(() => {
 		fetchData();
-	}, [id]);
+	}, [updateData]);
+
+	useEffect(() => {
+		setTimeout(() => {
+			setIsError(null);
+		}, 10000);
+	}, [isError]);
 
 	const updateOnCLickHandle = () => {
 		fetch("/api/VehicleApi/" + id + "?" + new URLSearchParams(updateData), { method: "PUT" })
 			.then((response) => {
 				if (!response.ok) {
-					console.log(response);
 					setIsError(`${response.status} ${response.statusText} `);
 					return response;
 				}
@@ -66,7 +72,7 @@ const VehicleEdit = () => {
 					<label htmlFor="trimLevel">Trim Level</label>
 					<input type="text" name="trimLevel" id="trimLevel" placeholder={trimLevel} value={updateData.trimLevel} onChange={handleChange} />
 				</div>
-				<div>{isError && <p style={{ color: "red" }}>{isError}</p>}</div>
+				<div className="fixed-height">{isError && <Error isError={isError} />}</div>
 				<div className="center-hori">
 					<button className="buton but-edit-page">
 						<div>

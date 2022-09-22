@@ -47,15 +47,11 @@ function DealershipEdit() {
 	};
 
 	const updateOnCLickHandle = async () => {
-		// await fetch("/api/DealershipApi/" + id + "?" + new URLSearchParams(updateName), { method: "PUT" });
 		try {
 			const response = await fetch("/api/DealershipApi/" + id + "?" + new URLSearchParams(updateName), { method: "PUT" });
-			// const data = await response.json();
 			if (!response.ok) {
 				setIsError(`${response.status} ${response.statusText}`);
 			}
-			// setIsError(`Line 45: ${data.status} ${data.title}`);
-			// console.log(data);
 		} catch (error) {
 			console.log(error);
 		}
@@ -92,6 +88,7 @@ function DealershipEdit() {
 					<label htmlFor="phoneNumber">Phone Number</label>
 					<input maxLength={10} type="text" name="phoneNumber" id="phoneNumber" placeholder={phoneNumber} value={updateName.phoneNumber} onChange={changeHandle} />
 				</div>
+				<div className="fixed-height">{isError && <Error isError={isError} />}</div>
 				<div className="center-hori">
 					<button className="buton but-edit-page">
 						<div>
@@ -100,7 +97,6 @@ function DealershipEdit() {
 					</button>
 				</div>
 			</form>
-			<div className="fixed-height">{isError && <Error isError={isError} />}</div>
 			<button className="buton but-edit-page-back">
 				<Link to={"/dealership"}>
 					<FaLongArrowAltLeft /> Back to Dealership

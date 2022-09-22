@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { FaEdit, FaLongArrowAltLeft } from "react-icons/fa";
+import Error from "./Error";
 
 const ModalEdit = () => {
 	const { id } = useParams();
@@ -25,7 +26,13 @@ const ModalEdit = () => {
 
 	useEffect(() => {
 		fetchData();
-	}, [id]);
+	}, [updateData]);
+
+	useEffect(() => {
+		setTimeout(() => {
+			setIsError(null);
+		}, 10000);
+	});
 
 	const updateOnCLickHandle = () => {
 		fetch("/api/ModelApi/" + id + "?" + new URLSearchParams(updateData), { method: "PUT" })
@@ -62,7 +69,7 @@ const ModalEdit = () => {
 					<label htmlFor="name">Name</label>
 					<input type="text" name="name" id="name" placeholder={name} value={updateData.name} onChange={handleChange} />
 				</div>
-				<div>{isError && <p style={{ color: "red" }}>{isError}</p>}</div>
+				<div className="fixed-height">{isError && <Error isError={isError} />}</div>
 				<div className="center-hori">
 					<button className="buton but-edit-page">
 						<div>
