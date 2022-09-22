@@ -41,7 +41,6 @@ function Vehicle() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		addVehicle();
-		// setArrLength((oldState) => oldState + 1);
 		setFormData({ vin: "", modelID: "", dealershipID: "", trimLevel: "" });
 	};
 

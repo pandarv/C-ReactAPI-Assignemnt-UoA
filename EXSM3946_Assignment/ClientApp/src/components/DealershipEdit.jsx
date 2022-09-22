@@ -1,23 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { FaEdit, FaLongArrowAltLeft } from "react-icons/fa";
+import Error from "./Error";
 
 function DealershipEdit() {
 	const { id } = useParams();
 	const [dealership, setDealership] = useState([]);
-	const [isError, setIsError] = useState(null);
+	// const [manufacturers, setManufacturers] = useState([]);
+	const [isError, setIsError] = useState("");
 	const [updateName, setUpdateName] = useState({ name: "", manufacturerID: "", address: "", phoneNumber: "" });
 	const { name, manufacturerID, address, phoneNumber } = dealership;
 
 	const fetchData = async () => {
 		try {
 			const response = await fetch("/api/DealershipApi/" + id);
+			// const responseManu = await fetch("/api/ManufacturerApi/");
 			const data = await response.json();
-			console.log(data);
+			// const dataManu = await responseManu.json();
+			// console.log(data);
+			// console.log(dataManu);
 			if (!response.ok) {
-				throw new Error(response.statusText);
+				throw new Error(`Error Dealership: ${response.statusText}`);
 			}
-			return setDealership(data);
+			// else if (!responseManu.ok) {
+			// 	throw new Error(`Error Manufacturer: ${responseManu.statusText}`);
+			// }
+			setDealership(data);
+			// setManufacturers(dataManu);
 		} catch (error) {
 			console.log(error);
 		}
@@ -25,18 +34,31 @@ function DealershipEdit() {
 
 	useEffect(() => {
 		fetchData();
-	}, [id]);
+	}, [updateName]);
 
-	const updateOnCLickHandle = () => {
-		fetch("/api/DealershipApi/" + id + "?" + new URLSearchParams(updateName), { method: "PUT" })
-			.then((response) => {
-				if (!response.ok) {
-					console.log(response);
-					setIsError(`${response.status} ${response.statusText} `);
-					return response;
-				}
-			})
-			.catch((error) => console.log(error));
+	useEffect(() => {
+		setTimeout(() => {
+			setIsError("");
+		}, 10000);
+	}, [isError]);
+
+	const changeHandle = (e) => {
+		setUpdateName((oldState) => ({ ...oldState, [e.target.name]: e.target.value }));
+	};
+
+	const updateOnCLickHandle = async () => {
+		// await fetch("/api/DealershipApi/" + id + "?" + new URLSearchParams(updateName), { method: "PUT" });
+		try {
+			const response = await fetch("/api/DealershipApi/" + id + "?" + new URLSearchParams(updateName), { method: "PUT" });
+			// const data = await response.json();
+			if (!response.ok) {
+				setIsError(`${response.status} ${response.statusText}`);
+			}
+			// setIsError(`Line 45: ${data.status} ${data.title}`);
+			// console.log(data);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const handleUpdate = (e) => {
@@ -45,15 +67,10 @@ function DealershipEdit() {
 		setUpdateName({ name: "", manufacturerID: "", address: "", phoneNumber: "" });
 	};
 
-	const changeHandle = (e) => {
-		console.log(e.target.value);
-		setUpdateName((oldState) => ({ ...oldState, [e.target.name]: e.target.value }));
-	};
-
 	return (
 		<section className="form-section-edit">
 			<h1>Edit Dealership</h1>
-			<h4>{id}</h4>
+			<h4>The dealership ID is: {id}</h4>
 			<form onSubmit={handleUpdate}>
 				<div>
 					<label htmlFor="name">Name</label>
@@ -63,6 +80,10 @@ function DealershipEdit() {
 					<label htmlFor="manuID">Manufacturer ID</label>
 					<input type="number" name="manufacturerID" id="manuID" placeholder={manufacturerID} value={updateName.manufacturerID} onChange={changeHandle} />
 				</div>
+				{/* <div>
+					<label htmlFor="manuID">Manufacturer List</label>
+					<input type="number" name="manufacturerID" id="manuID" placeholder={manufacturerID} value={updateName.manufacturerID} onChange={changeHandle} />
+				</div> */}
 				<div>
 					<label htmlFor="address">Address</label>
 					<input type="text" name="address" id="address" placeholder={address} value={updateName.address} onChange={changeHandle} />
@@ -79,7 +100,7 @@ function DealershipEdit() {
 					</button>
 				</div>
 			</form>
-			{isError && <p style={{ color: "red" }}>{isError}</p>}
+			<div className="fixed-height">{isError && <Error isError={isError} />}</div>
 			<button className="buton but-edit-page-back">
 				<Link to={"/dealership"}>
 					<FaLongArrowAltLeft /> Back to Dealership

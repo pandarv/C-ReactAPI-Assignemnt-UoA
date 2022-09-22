@@ -39,7 +39,7 @@ function Vehicle_Dealership() {
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		!formData.name.match(/^[\w\s'.,-]{1,30}$/) ? setIsError("Name is either empty or not in correct format") : !formData.manufacturerID.match(/^[\d]{1,11}$/) ? setIsError("Manufacture ID is not in correct format") : !formData.address.match(/^[\w\s'.,-]{1,50}$/) ? setIsError("Address is not in correct format") : !formData.phoneNumber.match(/^[2-9][\d]{9}$/) ? setIsError("Phone number is not in correct format") : addDealership();
+		!formData.name.match(/^[\w\s'.,-]{1,30}$/) ? setIsError("Name is either empty or not in correct format") : !formData.manufacturerID.match(/^[\d]{1,11}$/) ? setIsError("Manufacture ID is not in correct format") : !formData.address.match(/^[\w\s'#.,-]{1,50}$/) ? setIsError("Address is not in correct format") : !formData.phoneNumber.match(/^[2-9][\d]{9}$/) ? setIsError("Phone number is not in correct format") : addDealership();
 		setArrLength((oldState) => oldState + 1);
 		setFormData({ name: "", manufacturerID: "", address: "", phoneNumber: "" });
 	};

@@ -8,6 +8,7 @@ using API_Assignment.Data;
 using API_Assignment.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace API_Assignment.Controllers
 {
@@ -107,6 +108,14 @@ namespace API_Assignment.Controllers
         providedManufacturerID = int.Parse(manufacturerID);
       }
       catch
+      {
+        return BadRequest();
+      }
+      if (phoneNumber.Any(x => char.IsLetter(x)))
+      {
+        return BadRequest();
+      }
+      if (!new Regex(@"^[2-9][\d]{9}$").IsMatch(phoneNumber))
       {
         return BadRequest();
       }
