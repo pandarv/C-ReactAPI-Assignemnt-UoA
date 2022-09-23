@@ -6,6 +6,7 @@ import Error from "./Error";
 
 function Vehicle_Modal() {
 	const [modals, setModals] = useState([]);
+	const [manufacturers, setManufacturers] = useState([]);
 	const [formData, setFormData] = useState({ manufacturerID: "", name: "" });
 	const [isError, setIsError] = useState("");
 	const [arrLength, setArrLength] = useState(modals.length);
@@ -14,9 +15,12 @@ function Vehicle_Modal() {
 	const fetchData = async () => {
 		setLoading(true);
 		const response = await fetch("/api/ModelApi");
+		const responseManu = await fetch("/api/ManufacturerApi");
 		const data = await response.json();
+		const dataManu = await responseManu.json();
 		setLoading(false);
 		setModals(data);
+		setManufacturers(dataManu);
 	};
 
 	useEffect(() => {
@@ -97,8 +101,17 @@ function Vehicle_Modal() {
 				<h2>Add New Modal</h2>
 				<form onSubmit={handleSubmit}>
 					<div>
-						<label htmlFor="manuID">Manufacturer ID</label>
-						<input type="number" name="manufacturerID" id="manuID" value={formData.manufacturerID} onChange={handleChange} />
+						<label htmlFor="manu-name">Manufacturer Name</label>
+						<select name="manufacturerID" id="manu-name" value={formData.manufacturerID} onChange={handleChange}>
+							<option value="">--- Choose ---</option>
+							{manufacturers.map((manufacturer) => {
+								return (
+									<option key={manufacturer.id} value={manufacturer.id}>
+										{manufacturer.name}
+									</option>
+								);
+							})}
+						</select>
 					</div>
 					<div>
 						<label htmlFor="name">Name</label>

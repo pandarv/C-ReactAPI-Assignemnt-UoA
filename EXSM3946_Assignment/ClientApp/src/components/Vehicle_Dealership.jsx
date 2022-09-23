@@ -6,6 +6,7 @@ import Error from "./Error";
 
 function Vehicle_Dealership() {
 	const [dealership, setDealership] = useState([]);
+	const [manufacturers, setManufacturers] = useState([]);
 	const [formData, setFormData] = useState({ name: "", manufacturerID: "", address: "", phoneNumber: "" });
 	const [isError, setIsError] = useState("");
 	const [arrLength, setArrLength] = useState(dealership.length);
@@ -14,9 +15,12 @@ function Vehicle_Dealership() {
 	const fetchData = async () => {
 		setLoading(true);
 		const response = await fetch("/api/DealershipApi");
+		const responseManu = await fetch("/api/ManufacturerApi");
 		const data = await response.json();
+		const dataManu = await responseManu.json();
 		setLoading(false);
 		setDealership(data);
+		setManufacturers(dataManu);
 	};
 	useEffect(() => {
 		fetchData();
@@ -104,9 +108,22 @@ function Vehicle_Dealership() {
 						<label htmlFor="name">Name</label>
 						<input type="text" name="name" id="name" value={formData.name} onChange={handleChange} />
 					</div>
-					<div>
+					{/* <div>
 						<label htmlFor="manuID">Manufacturer ID</label>
 						<input type="number" name="manufacturerID" id="manuID" value={formData.manufacturerID} onChange={handleChange} />
+					</div> */}
+					<div>
+						<label htmlFor="manu-name">Manufacturer Name</label>
+						<select name="manufacturerID" id="manu-name" value={formData.manufacturerID} onChange={handleChange}>
+							<option value="">--- Choose ---</option>
+							{manufacturers.map((manufacturer) => {
+								return (
+									<option key={manufacturer.id} value={manufacturer.id}>
+										{manufacturer.name}
+									</option>
+								);
+							})}
+						</select>
 					</div>
 					<div>
 						<label htmlFor="address">Address</label>

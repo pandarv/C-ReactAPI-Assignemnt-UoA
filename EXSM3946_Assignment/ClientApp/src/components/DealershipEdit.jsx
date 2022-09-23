@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { FaEdit, FaLongArrowAltLeft } from "react-icons/fa";
 import Error from "./Error";
+import OptionList from "./OptionList";
 
 function DealershipEdit() {
 	const { id } = useParams();
 	const [dealership, setDealership] = useState([]);
-	// const [manufacturers, setManufacturers] = useState([]);
+	const [manufacturers, setManufacturers] = useState([]);
 	const [isError, setIsError] = useState("");
 	const [updateName, setUpdateName] = useState({ name: "", manufacturerID: "", address: "", phoneNumber: "" });
 	const { name, manufacturerID, address, phoneNumber } = dealership;
@@ -14,19 +15,16 @@ function DealershipEdit() {
 	const fetchData = async () => {
 		try {
 			const response = await fetch("/api/DealershipApi/" + id);
-			// const responseManu = await fetch("/api/ManufacturerApi/");
+			const responseManu = await fetch("/api/ManufacturerApi/");
 			const data = await response.json();
-			// const dataManu = await responseManu.json();
-			// console.log(data);
-			// console.log(dataManu);
+			const dataManu = await responseManu.json();
 			if (!response.ok) {
 				throw new Error(`Error Dealership: ${response.statusText}`);
+			} else if (!responseManu.ok) {
+				throw new Error(`Error Manufacturer: ${responseManu.statusText}`);
 			}
-			// else if (!responseManu.ok) {
-			// 	throw new Error(`Error Manufacturer: ${responseManu.statusText}`);
-			// }
 			setDealership(data);
-			// setManufacturers(dataManu);
+			setManufacturers(dataManu);
 		} catch (error) {
 			console.log(error);
 		}
@@ -73,13 +71,15 @@ function DealershipEdit() {
 					<input type="text" name="name" id="name" placeholder={name} value={updateName.name} onChange={changeHandle} />
 				</div>
 				<div>
-					<label htmlFor="manuID">Manufacturer ID</label>
-					<input type="number" name="manufacturerID" id="manuID" placeholder={manufacturerID} value={updateName.manufacturerID} onChange={changeHandle} />
+					<label htmlFor="manu-name">Manufacturer Name</label>
+					{/* <input type="number" name="manufacturerID" id="manuID" placeholder={manufacturerID} value={updateName.manufacturerID} onChange={changeHandle} /> */}
+					<select name="manufacturerID" id="manu-name" value={updateName.manufacturerID} onChange={changeHandle}>
+						<option value="">--- Choose ---</option>
+						{manufacturers.map((manufacturer) => {
+							return <OptionList key={manufacturer.id} option={manufacturer} />;
+						})}
+					</select>
 				</div>
-				{/* <div>
-					<label htmlFor="manuID">Manufacturer List</label>
-					<input type="number" name="manufacturerID" id="manuID" placeholder={manufacturerID} value={updateName.manufacturerID} onChange={changeHandle} />
-				</div> */}
 				<div>
 					<label htmlFor="address">Address</label>
 					<input type="text" name="address" id="address" placeholder={address} value={updateName.address} onChange={changeHandle} />

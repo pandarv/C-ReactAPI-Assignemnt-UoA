@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { FaEdit, FaLongArrowAltLeft } from "react-icons/fa";
 import Error from "./Error";
+import OptionList from "./OptionList";
 
 const VehicleEdit = () => {
 	const { id } = useParams();
 	const [vehicle, setVehicle] = useState([]);
+	const [modals, setModals] = useState([]);
+	const [dealerships, setDealerships] = useState([]);
 	const [isError, setIsError] = useState(null);
 	const [updateData, setUpdateData] = useState({ modelID: "", dealershipID: "", trimLevel: "" });
 	const { modelID, dealershipID, trimLevel } = vehicle;
@@ -13,12 +16,18 @@ const VehicleEdit = () => {
 	const fetchData = async () => {
 		try {
 			const response = await fetch("/api/VehicleApi/" + id);
+			const responseMod = await fetch("/api/ModelApi");
+			const responseDeal = await fetch("/api/DealershipApi");
 			const data = await response.json();
+			const dataMod = await responseMod.json();
+			const dataDeal = await responseDeal.json();
 			console.log(data);
 			if (!response.ok) {
 				throw new Error(response.statusText);
 			}
-			return setVehicle(data);
+			setVehicle(data);
+			setModals(dataMod);
+			setDealerships(dataDeal);
 		} catch (error) {
 			console.log(error);
 		}
@@ -61,12 +70,23 @@ const VehicleEdit = () => {
 
 			<form onSubmit={handleUpdate}>
 				<div>
-					<label htmlFor="modID">Modal ID</label>
-					<input type="number" name="modelID" id="modID" placeholder={modelID} value={updateData.modelID} onChange={handleChange} />
+					<label htmlFor="mod-name">Modal Name</label>
+					{/* <input type="number" name="modelID" id="modID" placeholder={modelID} value={updateData.modelID} onChange={handleChange} /> */}
+					<select name="modelID" id="mod-name" value={updateData.modelID} onChange={handleChange}>
+						<option value="">--- Choose ---</option>
+						{modals.map((modal) => {
+							return <OptionList key={modal.id} option={modal} />;
+						})}
+					</select>
 				</div>
 				<div>
-					<label htmlFor="dealerID">Dealership ID</label>
-					<input type="number" name="dealershipID" id="modID" placeholder={dealershipID} value={updateData.dealershipID} onChange={handleChange} />
+					<label htmlFor="dealer-name">Dealership Name</label>
+					<select name="dealershipID" id="dealer-name" value={updateData.dealershipID} onChange={handleChange}>
+						<option value="">--- Choose ---</option>
+						{dealerships.map((dealership) => {
+							return <OptionList key={dealership.id} option={dealership} />;
+						})}
+					</select>
 				</div>
 				<div>
 					<label htmlFor="trimLevel">Trim Level</label>

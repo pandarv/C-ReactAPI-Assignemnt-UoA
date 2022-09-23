@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { FaEdit, FaLongArrowAltLeft } from "react-icons/fa";
 import Error from "./Error";
+import OptionList from "./OptionList";
 
 const ModalEdit = () => {
 	const { id } = useParams();
 	const [modal, setModal] = useState([]);
+	const [manufacturers, setManufacturers] = useState([]);
 	const [isError, setIsError] = useState(null);
 	const [updateData, setUpdateData] = useState({ manufacturerID: "", name: "" });
 	const { manufacturerID, name } = modal;
@@ -13,12 +15,14 @@ const ModalEdit = () => {
 	const fetchData = async () => {
 		try {
 			const response = await fetch("/api/ModelApi/" + id);
+			const responseManu = await fetch("/api/ManufacturerApi");
 			const data = await response.json();
-			console.log(data);
+			const dataManu = await responseManu.json();
 			if (!response.ok) {
 				throw new Error(response.statusText);
 			}
-			return setModal(data);
+			setModal(data);
+			setManufacturers(dataManu);
 		} catch (error) {
 			console.log(error);
 		}
@@ -62,8 +66,14 @@ const ModalEdit = () => {
 			<h4>{id}</h4>
 			<form onSubmit={handleUpdate}>
 				<div>
-					<label htmlFor="manuID">Manufacturer ID</label>
-					<input type="number" name="manufacturerID" id="manuID" placeholder={manufacturerID} value={updateData.manufacturerID} onChange={handleChange} />
+					<label htmlFor="manu-name">Manufacturer Name</label>
+					{/* <input type="number" name="manufacturerID" id="manuID" placeholder={manufacturerID} value={updateData.manufacturerID} onChange={handleChange} /> */}
+					<select name="manufacturerID" id="manu-name" value={updateData.manufacturerID} onChange={handleChange}>
+						<option value="">--- Choose ---</option>
+						{manufacturers.map((manufacturer) => {
+							return <OptionList key={manufacturer.id} option={manufacturer} />;
+						})}
+					</select>
 				</div>
 				<div>
 					<label htmlFor="name">Name</label>

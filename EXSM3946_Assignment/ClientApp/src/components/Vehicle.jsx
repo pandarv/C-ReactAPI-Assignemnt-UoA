@@ -6,6 +6,8 @@ import Error from "./Error";
 
 function Vehicle() {
 	const [vehicle, setVehicle] = useState([]);
+	const [modals, setModals] = useState([]);
+	const [dealerships, setDealerships] = useState([]);
 	const [formData, setFormData] = useState({ vin: "", modelID: "", dealershipID: "", trimLevel: "" });
 	const [isError, setIsError] = useState("");
 	const [arrLength, setArrLength] = useState(vehicle.length);
@@ -14,9 +16,15 @@ function Vehicle() {
 	const fetchData = async () => {
 		setLoading(true);
 		const response = await fetch("/api/VehicleApi");
+		const responseMod = await fetch("/api/ModelApi");
+		const responseDeal = await fetch("/api/DealershipApi");
 		const data = await response.json();
+		const dataMod = await responseMod.json();
+		const dataDeal = await responseDeal.json();
 		setLoading(false);
 		setVehicle(data);
+		setModals(dataMod);
+		setDealerships(dataDeal);
 	};
 	useEffect(() => {
 		fetchData();
@@ -101,14 +109,38 @@ function Vehicle() {
 						<label htmlFor="vin">VIN</label>
 						<input type="text" name="vin" id="vin" value={formData.vin.toUpperCase()} onChange={handleChange} />
 					</div>
-					<div>
+					{/* <div>
 						<label htmlFor="modID">Modal ID</label>
 						<input type="number" name="modelID" id="modID" value={formData.modelID} onChange={handleChange} />
+					</div> */}
+					<div>
+						<label htmlFor="mod-name">Modal Name</label>
+						{/* <input type="number" name="modelID" id="modID" value={formData.modelID} onChange={handleChange} /> */}
+						<select name="modelID" id="mod-name" value={formData.modelID} onChange={handleChange}>
+							<option value="">--- Choose ---</option>
+							{modals.map((modal) => {
+								return (
+									<option key={modal.id} value={modal.id}>
+										{modal.name}
+									</option>
+								);
+							})}
+						</select>
 					</div>
 					<div>
-						<label htmlFor="dealerID">Dealership ID</label>
-						<input type="number" name="dealershipID" id="dealerID" value={formData.dealershipID} onChange={handleChange} />
+						<label htmlFor="dealer-name">Dealership Name</label>
+						<select name="dealershipID" id="dealer-name" value={formData.dealershipID} onChange={handleChange}>
+							<option value="">--- Choose ---</option>
+							{dealerships.map((dealership) => {
+								return (
+									<option key={dealership.id} value={dealership.id}>
+										{dealership.name}
+									</option>
+								);
+							})}
+						</select>
 					</div>
+
 					<div>
 						<label htmlFor="trimLevel">Trim Level</label>
 						<input type="text" name="trimLevel" id="trimLevel" value={formData.trimLevel} onChange={handleChange} />
